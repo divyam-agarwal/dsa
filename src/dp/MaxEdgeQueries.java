@@ -1,7 +1,6 @@
 package dp;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class MaxEdgeQueries {
 
@@ -62,6 +61,7 @@ public class MaxEdgeQueries {
         for(Pair p: neighbours){
             int v = p.getV();
             int wt = p.getWt();
+            if(v == parent) continue;
             depth[v] = depth[u]+1;
             dfs(v, u, wt);
         }
@@ -80,12 +80,11 @@ public class MaxEdgeQueries {
         int newU = u;
         int liftCount = 0;
         while(diff!=0){
-
             if((diff & 1) !=0){
                 ans = Math.max(ans, maxEdge[newU][liftCount]);
                 newU = up[newU][liftCount];
-                liftCount++;
             }
+            liftCount++;
             diff = diff>>1;
         }
 
@@ -117,17 +116,12 @@ public class MaxEdgeQueries {
         for(int i = 0;i<=n;i++){             // 0..n so adj.get(u) is valid for 1-indexed nodes
             adj.add(new ArrayList<>());
         }
-        int[] parent = new int[n+1];
-        Arrays.fill(parent, -1);
-
         for(ArrayList<Integer> edge: A){
             int u = edge.get(0);
             int v = edge.get(1);
             int wt = edge.get(2);
-            Pair p1 = new Pair(v, wt);
-            adj.get(u).add(p1);
-            parent[v] = u;
-
+            adj.get(u).add(new Pair(v, wt));
+            adj.get(v).add(new Pair(u, wt));
         }
         //to get ancestors
 
