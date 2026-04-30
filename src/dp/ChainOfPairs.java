@@ -20,45 +20,27 @@ public class ChainOfPairs {
             return 0;
         }
 
-        int l = 0, r= temp.size()-1;
-        int m = l, ans = r+1;
+        // Find rightmost j where temp[j] can precede p (temp[j].end < p.start)
+        int l = 0, r = temp.size()-1, pos = -1;
         while(l<=r){
-            m = l+ (r-l)/2;
-            if(isValidChain(p, temp.get(m))){
-                if(isValidChain(temp.get(m-1), p)){
-                    ans = m;
-                    temp.set(ans, p);
-                    return ans;
-                }
-                else{
-                    ans = m-1;
-                }
+            int m = l + (r-l)/2;
+            if(isValidChain(temp.get(m), p)){
+                pos = m;
+                l = m+1;
+            } else{
                 r = m-1;
             }
-            else{
-                l = m+1;
-            }
         }
 
-        if(ans<temp.size()){
-            //check all edge cases
-            Pair p1 = temp.get(ans);
-            Pair p2 = null;
-            if(ans-1>=0){
-                p2 = temp.get(ans-1);
+        int insertIdx = pos+1;
+        if(insertIdx < temp.size()){
+            if(p.end < temp.get(insertIdx).end){
+                temp.set(insertIdx, p);
             }
-
-            if(p1.end > p.end && (p2==null || p2.end < p.start)){
-                temp.set(ans, p);
-            }
-        }
-        else{
+        } else{
             temp.add(p);
         }
-
-        return ans;
-
-
+        return insertIdx;
     }
 
     public boolean isValidChain(Pair p1, Pair p2){
@@ -67,12 +49,9 @@ public class ChainOfPairs {
         return false;
     }
     public int solve(ArrayList<ArrayList<Integer>> A) {
-        int n = A.size();
-
         ArrayList<Pair> temp = new ArrayList<>();
-
-        for(int i = 0;i<n;i++){
-            int idx = findIdxInTemp(temp, new Pair(A.get(i).get(0), A.get(i).get(1)));
+        for(ArrayList<Integer> pair : A){
+            findIdxInTemp(temp, new Pair(pair.get(0), pair.get(1)));
         }
         return temp.size();
     }

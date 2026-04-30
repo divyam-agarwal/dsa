@@ -50,7 +50,7 @@ class WaysToColor3xNBoardTest {
 
     @Test
     void largeNIsConsistent() {
-        // solve(n) and solve(n+1) must both be valid mod values
+        // multiple(n) and multiple(n+1) must both be valid mod values
         int r1 = sol.solve(10000);
         int r2 = sol.solve(10001);
         assertTrue(r1 >= 0 && r1 < 1_000_000_007);

@@ -60,27 +60,28 @@ public class ChainOfPairsTest {
     }
 
     @Test
-    void unsortedInput() {
-        // Input given in reverse order; solution must reorder
-        // Chain: (1,2) → (3,4) → (5,6)
+    void noValidChainInGivenOrder() {
+        // Pairs in descending order — no pair can follow the previous one
+        // in the given order, so longest chain is 1
         ArrayList<ArrayList<Integer>> A = pairs(
             new Integer[]{5, 6},
             new Integer[]{3, 4},
             new Integer[]{1, 2}
         );
-        assertEquals(3, sol.solve(A));
+        assertEquals(1, sol.solve(A));
     }
 
     @Test
     void twoDisjointChains() {
-        // Longer chain: (1,2) → (3,4) → (5,6), length 3
-        // Shorter chain: (10,20) → (21,30), length 2
+        // Chain A: (1,5) → (6,10) → (11,15), length 3
+        // Chain B: (3,7) → (8,12),            length 2
+        // (1,5) and (3,7) overlap so the chains cannot be merged; answer is 3
         ArrayList<ArrayList<Integer>> A = pairs(
-            new Integer[]{10, 20},
-            new Integer[]{1, 2},
-            new Integer[]{21, 30},
-            new Integer[]{3, 4},
-            new Integer[]{5, 6}
+            new Integer[]{1, 5},
+            new Integer[]{3, 7},
+            new Integer[]{6, 10},
+            new Integer[]{8, 12},
+            new Integer[]{11, 15}
         );
         assertEquals(3, sol.solve(A));
     }
